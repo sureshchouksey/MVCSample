@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    
+    <link href="Css/Reset.css" rel="stylesheet" type="text/css" />
+    <link href="Css/Standard.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <h1>JSONP Callbacks with the JsonpFormatter</h1>
+    <div class="descriptionheader">
+        This example demonstrates calling one of the Web API endpoints 
+        by using JSONP with a custom JSONP formatter, which allows for 
+        cross-domain access to JSON data. The configuration adds a custom JSONP formatter (in global.asax)
+        that provides this functionality. This example is local by default, 
+        but if you access the albums URL remotely with a JSONP request it 
+        will serve the data cross-domain.
+        (although this sample is local you can run this sample on another machine and point to that domain/url to test cross site 
+        operation).
+        
+    </div>
+
+    <div class="toolbarcontainer">
+      <a href="./default.htm" class="hoverbutton"><img src="css/images/home.gif" /> Back to Samples</a>
+      <a href="jsonpclient.htm" class="hoverbutton"><img src="css/images/refresh.gif" /> Refresh</a>  
+    </div>
+
+    <div class="contentcontainer" style="width: 600px; margin: 50px auto;">
+        <h3>Albums loaded via JSONP:</h3>
+        <hr />
+        <div id="divAlbumList" >
+            
+        </div>
+
+        
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getAlbums();
+        });
+
+	    function getAlbums() {
+            // for testing this is done locally, but JSONP
+            // works with GET calls for remote JSON data
+            // if you set this sample up on another machine you should
+            // be able to access the JSON data from there.
+	        $.getJSON("albums?callback=?", null,
+                  function (albums) {
+                      $(albums).each(function () {
+                          var $div =
+                             $("<div>")
+                                .data("id", this.Id)
+                                .text(this.AlbumName + " by  " + this.Artist)
+                                .css({ "padding-bottom": 5, "border-bottom": "dotted 1px teal" });
+
+                          $div.appendTo("#divAlbumList");
+                      });
+                  });
+	    }
+    </script>
+
+
+</body>
+</html>
